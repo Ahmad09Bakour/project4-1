@@ -12,6 +12,12 @@
     
 Here be user profile info
 
+            <ul>
+                <li>First Name: <%= schedules[0].first_name %></li>
+                <li>Last Name: <%= schedules[0].surname %></li>
+                <li>Email: <%= schedules[0].email %></li>
+            </ul>
+
     </div>
 
     <div class="section-right">
@@ -21,5 +27,26 @@ Here be user profile info
         </h3>
 
         here will be all user's schedules
+
+        <% if (schedules[0].day === null) { %> <!-- Still trying to figure out the exact = sign to use because === will not return the p tag below and == will return the p tag in all users -->
+            <p>This user has no schedules</p>
+        <% } else { %>
+            <table>
+                <tr>
+                    <td>Day</td>
+                    <td>Start Time</td>
+                    <td>End Time</td>
+                </tr>
+                <% for (i = 0; i < schedules.length; i++) { %>
+                    <tr>
+                        <td><%= schedules[i].day %></td>
+                        <td><%= schedules[i].start_time %></td>
+                        <td><%= schedules[i].end_time %></td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } %>
+        
+
     </div>
 </div>

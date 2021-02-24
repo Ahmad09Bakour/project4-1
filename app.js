@@ -47,8 +47,17 @@ app.get("/login", (req, res) => {
 // 3) logout route (no page)
 
 // 4) employee page
-app.get("/employee", (req, res) => {
-  res.render("pages/employee")
+app.get("/employee/:userId(\\d+)", (req, res) => { // To have more control over the exact string that can be matched by a route parameter, you can append a regular expression in parentheses (())
+  database.any(`SELECT * FROM users LEFT JOIN schedules ON schedules.user_id = users.id WHERE users.id = $1;`, [req.params.userId], profile => {
+
+  }) // use $1 to ensure that req.params.userId is an integer (prevents sql injection)
+    .then((user_profile) => {
+      res.render("pages/employee", {schedules: user_profile, weekDays: utils.weekDays})
+    })
+    .catch(error => {
+      res.send({error: error, stack: error.stack})
+      console.log("Error:", error) // added a console log to get specific error message
+    })
 })
 
 // 5) schedule management
